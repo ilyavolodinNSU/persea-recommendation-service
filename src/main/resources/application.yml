@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: persea-recommendation-service
+  datasource:
+      url: jdbc:postgresql://localhost:5433/recommendation_service
+      username: postgres
+      password: postgres
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/realms/persea
+  kafka:
+    bootstrap-servers: localhost:9094
+  data:
+    redis:
+      url: redis://localhost:6379
+
+app:
+  feed:
+    size: 500
+    ttl-seconds: 7200
+    action-weights:
+      like: 3.0
+      scan: 2.0
+      view: 1.0
+    default:
+      min-rating: 70
+      category-count: 5
+      ttl-seconds: 3600
+    cf:
+      min-similarity: 0.05
+      max-neighbors: 50
+
+kafka:
+  topics:
+    products-cdc:           data.cdc.public.products
+    product-categories-cdc: data.cdc.public.categories
+    product-brands-cdc:     data.cdc.public.brands
+    user-actions-cdc:       data.cdc.public.user_actions
+    user-action-types-cdc:  data.cdc.public.user_action_types
+  consumer-groups:
+    products-sync:           recommendation-service-products.cdc.sync
+    product-categories-sync: recommendation-service-product-categories.cdc.sync
+    product-brands-sync:     recommendation-service-product-brands.cdc.sync
+    user-actions-sync:       recommendation-service-user-actions.cdc.sync
+    user-action-types-sync:  recommendation-service-user-action-types.cdc.sync
+    
+server:
+  port: 8086
