@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://postgres-rec:5432/recommendation_service
+    url: jdbc:postgresql://postgres:5432/recommendation_service
     username: postgres
     password: postgres
   security:
