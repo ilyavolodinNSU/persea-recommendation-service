@@ -1,6 +1,7 @@
 package ru.persea.recommendationservice.handler;
 
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,9 @@ public class CategoriesSyncHandler {
         groupId = "${kafka.consumer-groups.product-categories-sync}",
         containerFactory = "jsonNodeKafkaListenerContainerFactory"
     )
-    public void consumeProductSync(JsonNode message) {
+    public void consumeProductSync(@Payload(required = false) JsonNode message) {
+        if (message == null || message.isNull() || message.isEmpty()) return;
+
         String op = message.get("payload").get("op").asString();
         JsonNode after  = message.get("payload").get("after");
         JsonNode before = message.get("payload").get("before");

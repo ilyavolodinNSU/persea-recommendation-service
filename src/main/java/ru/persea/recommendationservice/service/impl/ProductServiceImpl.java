@@ -2,6 +2,7 @@ package ru.persea.recommendationservice.service.impl;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import ru.persea.recommendationservice.dto.BrandDto;
@@ -86,7 +87,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void deleteProduct(ProductsSyncDto dto) {
+        jdbcTemplate.update("DELETE FROM user_actions WHERE product_id = ?", dto.id());
         jdbcTemplate.update("DELETE FROM products WHERE id = ?", dto.id());
     }
 }
