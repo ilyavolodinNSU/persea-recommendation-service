@@ -8,6 +8,7 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://auth-service:8080/realms/persea
+          jwk-set-uri: http://auth-service:8080/realms/persea/protocol/openid-connect/certs
   kafka:
     bootstrap-servers: kafka:9092
   data:
