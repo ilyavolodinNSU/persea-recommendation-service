@@ -12,6 +12,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import ru.persea.recommendationservice.dto.BrandDto;
 import ru.persea.recommendationservice.dto.CategoryDto;
 import ru.persea.recommendationservice.dto.ProductDto;
+import ru.persea.recommendationservice.repository.ProductRepository;
 
 import java.util.List;
 

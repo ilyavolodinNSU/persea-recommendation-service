@@ -10,6 +10,7 @@ import org.springframework.data.redis.core.ZSetOperations;
 import ru.persea.recommendationservice.dto.BrandDto;
 import ru.persea.recommendationservice.dto.CategoryDto;
 import ru.persea.recommendationservice.dto.ProductDto;
+import ru.persea.recommendationservice.repository.ProductRepository;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
