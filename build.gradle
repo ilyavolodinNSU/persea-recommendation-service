@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '4.0.5'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id 'org.sonarqube' version '7.3.0.8198'
 }
 
 group = 'ru.persea'
@@ -49,3 +50,33 @@ dependencies {
 test {
 	useJUnitPlatform()
 }
+
+def sonarToken() {
+	def tokenFile = rootProject.file('../sonar-token/sonar.token.env')
+	if (tokenFile.exists()) {
+		def props = new Properties()
+		tokenFile.withInputStream { props.load(it) }
+		return props.getProperty('SONAR_TOKEN')
+	}
+	// fallback: переменная окружения или gradle.properties
+	return project.findProperty('sonar.token') ?: System.getenv('SONAR_TOKEN')
+}
+
+sonarqube {
+	properties {
+		property "sonar.host.url", "http://localhost:9000"
+		property "sonar.login", sonarToken()
+		property "sonar.projectKey", "myapp-ms1"
+		property "sonar.projectName", "User Service"
+		property "sonar.sourceEncoding", "UTF-8"
+		property "sonar.sources", "src/main/java"
+		property "sonar.tests", "src/test/java"
+		property "sonar.java.binaries", "build/classes/java/main"
+		property "sonar.java.test.binaries", "build/classes/java/test"
+		property "sonar.java.libraries", "build/libs/*.jar"
+		property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+		property "sonar.gradle.skipCompile", "true"
+	}
+}
+
+build.finalizedBy 'sonarqube'
